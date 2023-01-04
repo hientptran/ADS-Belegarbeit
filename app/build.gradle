@@ -1,0 +1,33 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    implementation 'com.google.guava:guava:31.0.1-jre'
+    // Use to read and write csv files
+    implementation 'com.opencsv:opencsv:5.7.1'
+}
+
+application {
+    mainClass = 'budgetapp.App'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+run {
+    standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClassName
+    }
+}
