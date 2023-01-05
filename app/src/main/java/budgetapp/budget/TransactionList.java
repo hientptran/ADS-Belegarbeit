@@ -264,7 +264,12 @@ public class TransactionList extends LinkedList<Transaction> {
         return result;
     }
     public TransactionList searchByDate() {
-        String query = c.readString("Enter date to search: ", "^(19|20)\\d\\d[- \\/.](0[1-9]|1[012])[- \\/.](0[1-9]|[12][0-9]|3[01])$");
+        String query = c.readString("Enter date to search (yyyy-MM-dd) [default : today]: ", "^(19|20)\\d\\d[- \\/.](0[1-9]|1[012])[- \\/.](0[1-9]|[12][0-9]|3[01])$");
+        if (query.equals("")){
+            LocalDate localDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            query = localDate.format(formatter);
+        }
         TransactionList result = new TransactionList();
         Node node = head;
         while (node.next != null) {
