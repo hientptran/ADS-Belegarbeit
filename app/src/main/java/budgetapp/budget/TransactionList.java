@@ -197,6 +197,17 @@ public class TransactionList extends LinkedList<Transaction> {
         return sorted;
     }
     /* ----------------search-----------------------*/
+    public static boolean isNumeric(String string) {
+        if (string == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(string);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
     public TransactionList searchByName() {
         String query = c.readString("Enter name to search: ");
         TransactionList result = new TransactionList();
@@ -216,20 +227,39 @@ public class TransactionList extends LinkedList<Transaction> {
     }
     public TransactionList searchByCategory() {
         categories.printAll();
-        int categoryChoice = c.readInt("\nEnter category to search:", 0, categories.size());
-        String query = categories.get(categoryChoice);
         TransactionList result = new TransactionList();
-        Node node = head;
-        while (node.next != null) {
-            if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+        String categoryChoice = c.readString("\n enter category to search: ");
+        if (isNumeric(categoryChoice)) {
+            int numericChoice = Integer.parseInt(categoryChoice);
+            if (0 <= numericChoice && numericChoice <= categories.size) {
+                String query = categories.get(numericChoice);
+                Node node = head;
+                while (node.next != null) {
+                    if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+                        result.add(node.data);
+                        result.balance += node.data.getAmount();
+                    }
+                    node = node.next;
+                }
+                if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+                    result.add(node.data);
+                    result.balance += node.data.getAmount();
+                }
+            }
+        }
+        else {
+            Node node = head;
+            while (node.next != null) {
+                if (node.data.getCategory().toLowerCase().contains(categoryChoice.toLowerCase())) {
+                    result.add(node.data);
+                    result.balance += node.data.getAmount();
+                }
+                node = node.next;
+            }
+            if (node.data.getCategory().toLowerCase().contains(categoryChoice.toLowerCase())) {
                 result.add(node.data);
                 result.balance += node.data.getAmount();
             }
-            node = node.next;
-        }
-        if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
-            result.add(node.data);
-            result.balance += node.data.getAmount();
         }
         return result;
     }
