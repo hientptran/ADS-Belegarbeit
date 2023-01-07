@@ -39,12 +39,6 @@ public class TransactionList extends LinkedList<Transaction> {
         }
         return data;
     }
-    public void removeCategory() {
-        categories.printAll();
-        int choice = c.readInt("\nChoose a category to remove: ", 0, categories.size()-1);
-        categories.remove(choice);
-        c.printString("Category removed!");
-    }
     public void showStatistics() {
         c.printString(separator2);
         LinkedList<String>.Node cNode = categories.head;
@@ -202,7 +196,7 @@ public class TransactionList extends LinkedList<Transaction> {
             return false;
         }
         try {
-            double d = Double.parseDouble(string);
+            Double.parseDouble(string);
         } catch (NumberFormatException nfe) {
             return false;
         }
