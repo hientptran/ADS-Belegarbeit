@@ -200,7 +200,6 @@ public class LinkedList<Item> implements Listable<Item> {
             }
             start = start.next;
         }
-
         Item temp = current.data;
         current.data = pivot;
         end.data = temp;
@@ -217,5 +216,4 @@ public class LinkedList<Item> implements Listable<Item> {
                 && pivot_prev.next != null)
             quicksort(pivot_prev.next.next, end, comparator);
     }
-
 }

@@ -39,12 +39,6 @@ public class TransactionList extends LinkedList<Transaction> {
         }
         return data;
     }
-    public void removeCategory() {
-        categories.printAll();
-        int choice = c.readInt("\nChoose a category to remove: ", 0, categories.size()-1);
-        categories.remove(choice);
-        c.printString("Category removed!");
-    }
     public void showStatistics() {
         c.printString(separator2);
         LinkedList<String>.Node cNode = categories.head;
@@ -197,6 +191,17 @@ public class TransactionList extends LinkedList<Transaction> {
         return sorted;
     }
     /* ----------------search-----------------------*/
+    public static boolean isNumeric(String string) {
+        if (string == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(string);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
     public TransactionList searchByName() {
         String query = c.readString("Enter name to search: ");
         TransactionList result = new TransactionList();
@@ -216,25 +221,49 @@ public class TransactionList extends LinkedList<Transaction> {
     }
     public TransactionList searchByCategory() {
         categories.printAll();
-        int categoryChoice = c.readInt("\nEnter category to search:", 0, categories.size());
-        String query = categories.get(categoryChoice);
         TransactionList result = new TransactionList();
-        Node node = head;
-        while (node.next != null) {
-            if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+        String categoryChoice = c.readString("\n Enter category to search: ");
+        if (isNumeric(categoryChoice)) {
+            int numericChoice = Integer.parseInt(categoryChoice);
+            if (0 <= numericChoice && numericChoice <= categories.size) {
+                String query = categories.get(numericChoice);
+                Node node = head;
+                while (node.next != null) {
+                    if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+                        result.add(node.data);
+                        result.balance += node.data.getAmount();
+                    }
+                    node = node.next;
+                }
+                if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
+                    result.add(node.data);
+                    result.balance += node.data.getAmount();
+                }
+            }
+        }
+        else {
+            Node node = head;
+            while (node.next != null) {
+                if (node.data.getCategory().toLowerCase().contains(categoryChoice.toLowerCase())) {
+                    result.add(node.data);
+                    result.balance += node.data.getAmount();
+                }
+                node = node.next;
+            }
+            if (node.data.getCategory().toLowerCase().contains(categoryChoice.toLowerCase())) {
                 result.add(node.data);
                 result.balance += node.data.getAmount();
             }
-            node = node.next;
-        }
-        if (node.data.getCategory().toLowerCase().contains(query.toLowerCase())) {
-            result.add(node.data);
-            result.balance += node.data.getAmount();
         }
         return result;
     }
     public TransactionList searchByDate() {
-        String query = c.readString("Enter date to search: ", "^(19|20)\\d\\d[- \\/.](0[1-9]|1[012])[- \\/.](0[1-9]|[12][0-9]|3[01])$");
+        String query = c.readString("Enter date to search (yyyy-MM-dd) [default : today]: ", "^(19|20)\\d\\d[- \\/.](0[1-9]|1[012])[- \\/.](0[1-9]|[12][0-9]|3[01])$");
+        if (query.equals("")){
+            LocalDate localDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            query = localDate.format(formatter);
+        }
         TransactionList result = new TransactionList();
         Node node = head;
         while (node.next != null) {
