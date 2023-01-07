@@ -222,7 +222,7 @@ public class TransactionList extends LinkedList<Transaction> {
     public TransactionList searchByCategory() {
         categories.printAll();
         TransactionList result = new TransactionList();
-        String categoryChoice = c.readString("\n enter category to search: ");
+        String categoryChoice = c.readString("\n Enter category to search: ");
         if (isNumeric(categoryChoice)) {
             int numericChoice = Integer.parseInt(categoryChoice);
             if (0 <= numericChoice && numericChoice <= categories.size) {

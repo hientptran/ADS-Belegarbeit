@@ -10,7 +10,6 @@ public class Console implements IConsole {
     public int readInt(String text) {
         Scanner s = new Scanner(System.in);
         int result;
-
         while (true) {
             try {
                 System.out.println(text);
@@ -20,7 +19,6 @@ public class Console implements IConsole {
             } catch (Exception e) {
                 s.nextLine();
                 System.out.println("Invalid input. Try again :)");
-                //e.printStackTrace();
             }
         }
         return result;
@@ -37,7 +35,6 @@ public class Console implements IConsole {
             } catch (Exception e) {
                 s.nextLine();
                 System.out.println("Invalid input.");
-                e.printStackTrace();
             }
         }
         return result.trim();
@@ -63,7 +60,6 @@ public class Console implements IConsole {
             } catch (Exception e) {
                 s.nextLine();
                 System.out.println("Invalid input. Try again :)");
-                e.printStackTrace();
             }
         }
         return result;
@@ -89,7 +85,6 @@ public class Console implements IConsole {
             } catch (Exception e) {
                 s.nextLine();
                 System.out.println("Invalid input.");
-                e.printStackTrace();
             }
         }
         return result.trim();
@@ -106,7 +101,6 @@ public class Console implements IConsole {
             } catch (Exception e) {
                 s.nextLine();
                 System.out.println("Invalid input.");
-                e.printStackTrace();
             }
         }
         return result;
